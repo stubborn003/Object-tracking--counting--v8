@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 
 model = YOLO('yolov8n.pt')  # 加载 YOLO 模型
-VIDEO_PATH = "car_test1.mp4"  # 输入视频路径
+VIDEO_PATH = "person_test2.mp4"  # 输入视频路径
 RESULT_PATH = "result1.mp4"  # 输出视频路径
 
 videowriter = None  # 初始化视频写入器
@@ -33,7 +33,9 @@ if __name__ == '__main__':
             print("读取帧完成")
             break  # 跳出循环
 
+
         results = model.track(frame, persist=True, classes=OBJ_LIST)  # 使用 YOLO 模型进行跟踪
+
         a_frame = results[0].plot(line_width=2) if results[0] is not None else frame  # 绘制检测结果
 
         # 绘制多边形区域掩膜
@@ -43,7 +45,7 @@ if __name__ == '__main__':
         # 将掩膜应用到当前帧上
         a_frame = cv2.addWeighted(a_frame, 1, mask, 0.5, 0)  # 将掩膜叠加到当前帧
         # 检查是否检测到物体
-        if results[0] is not None and results[0].boxes is not None:
+        if results[0] is not None and results[0].boxes is not None and results[0].boxes.id is not None:
             boxes = results[0].boxes.xywh.cpu()  # 获取检测框的坐标 (x, y, w, h)
             track_ids = results[0].boxes.id.int().cpu().tolist()  # 获取每个检测框的跟踪 ID
 

@@ -36,7 +36,7 @@ if __name__ == '__main__':
         cv2.line(a_frame, (0, line_y), (int(frame_width), line_y), (0, 255, 0), 2)  # 绿色线
 
         # 检查是否检测到物体
-        if results[0] is not None and results[0].boxes is not None:
+        if results[0] is not None and results[0].boxes is not None and results[0].boxes.id is not None:
             boxes = results[0].boxes.xywh.cpu()  # 获取检测框的坐标 (x, y, w, h)
             track_ids = results[0].boxes.id.int().cpu().tolist()  # 获取每个检测框的跟踪 ID
 
